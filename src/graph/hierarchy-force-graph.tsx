@@ -1,7 +1,8 @@
-import {FC, useEffect, useRef} from "react";
-import {flattenNode} from "./utils.ts";
+import {useEffect, useRef} from "react";
+import {flattenNode} from "../utils.ts";
 import data from "./data.json";
 import * as d3 from "d3"
+import {SimulationNodeDatum} from "d3"
 
 export const HierarchyForceGraph = () => {
   const containerRef = useRef(null)
@@ -28,7 +29,7 @@ const runGraph = ({container}: {
   const rect = container.getBoundingClientRect();
   const {width, height} = rect;
   const svg = d3.select(container).append("svg").attr("width", "100%").attr("height", "100%").attr("viewBox", `0 0 ${width} ${height}`)
-  console.log('hello World')
+
   const simulation = d3
     .forceSimulation()
     .force(
@@ -44,7 +45,7 @@ const runGraph = ({container}: {
     )
     .force("charge", d3.forceManyBody().strength(100));
 
-  const drawLinks = (links) => {
+  const drawLinks = (links: any) => {
     svg.append("g").attr("class", "links");
     let link = svg
       .select(".links")
@@ -69,7 +70,7 @@ const runGraph = ({container}: {
     link = linkEnter.merge(link);
   };
 
-  const drawNodes = (nodes) => {
+  const drawNodes = (nodes: any) => {
     svg.append("g").attr("class", "nodes");
     let nodeContainer = svg
       .select(".nodes")
@@ -95,7 +96,7 @@ const runGraph = ({container}: {
       .attr("text-anchor", "middle")
       .attr("font-size", "16px")
       .attr("font-weight", "bold")
-      .text((d) => {
+      .text((d: any) => {
         return d.data.influencer_name
             ?.split(" ")
             .slice(0, 2)
@@ -105,24 +106,24 @@ const runGraph = ({container}: {
       });
 
     // prevent link overlap title
-    // nodeEnter
-    //   .append("text")
-    //   .attr("y", (d) => (isYou(d.data.purl) ? PRIMARY_NODE_RADIUS : NODE_RADIUS) * 1.5 + 3.5)
-    //   .attr("text-anchor", "middle")
-    //   .attr("font-size", "13px")
-    //   .attr("fill", "none")
-    //   .attr("stroke", "white")
-    //   .attr("stroke-width", "11px")
-    //   .text((d) => {
-    //     return isYou(d.data.purl) ? "You" : d.data.influencer_name;
-    //   });
+    nodeEnter
+      .append("text")
+      .attr("y", () => NODE_RADIUS * 1.5 + 3.5)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "13px")
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("stroke-width", "11px")
+      .text((d: any) => {
+        return d.data.influencer_name;
+      });
 
     nodeEnter
       .append("text")
       .attr("y", () => NODE_RADIUS * 1.5)
       .attr("text-anchor", "middle")
       .attr("font-size", "13px")
-      .text((d) => d.data.influencer_name);
+      .text((d: any) => d.data.influencer_name);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
@@ -132,8 +133,6 @@ const runGraph = ({container}: {
   const restartSimulation = () => {
     const {links, nodes} = flattenNode(data);
     simulation.stop();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     simulation.nodes(nodes);
     const link = d3
       .forceLink()
@@ -154,34 +153,29 @@ const runGraph = ({container}: {
       const linkElems = svg.select(".links").selectAll(".link");
       const nodeElems = svg.select(".nodes").selectAll(".node");
 
-      nodes.forEach((d) => {
+      nodes.forEach((d: SimulationNodeDatum & {depth: number}) => {
         d.y = d.depth < 0 ? -80 : (d.depth) * 120 + 60;
       });
 
-      nodeElems.attr("transform", (d) => {
+      nodeElems.attr("transform", (d: any) => {
         return `translate(${d.x}, ${d.y})`;
       });
 
       linkElems
-        .attr("x1", (d) => d.source.x)
-        .attr("y1", (d) => {
+        .attr("x1", (d: any) => {
+          return d.source.x
+        })
+        .attr("y1", (d: any) => {
           return d.source.y + NODE_RADIUS + 10;
         })
-        .attr("x2", (d) => d.target.x)
-        .attr("y2", (d) => d.target.y);
+        .attr("x2", (d: any) => d.target.x)
+        .attr("y2", (d: any) => d.target.y);
     });
     simulation.restart().alpha(1).alphaTarget(0);
   };
-
-  // useEffect(() => {
-  //   restartSimulation()
-  //   console.log('2')
-  // }, [restartSimulation]);
-
   restartSimulation()
   return {
     destroy: () => simulation.stop()
   };
 }
 
-//TODO: define interface, type

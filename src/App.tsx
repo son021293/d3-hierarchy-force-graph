@@ -1,10 +1,10 @@
 import './App.css'
-import {HierarchyForceGraph} from "./hierarchy-force-graph.tsx";
+import {HierarchyForceGraph} from "./graph/hierarchy-force-graph.tsx";
 
 function App() {
   return (
     <>
-      <div>Hierarchy D3 Force Simulation</div>
+      <div className="header">Hierarchy D3 Force Simulation</div>
       <HierarchyForceGraph/>
     </>
   )
