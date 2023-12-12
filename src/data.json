@@ -1,0 +1,57 @@
+{
+  "id": "000000",
+  "group_name": "Your Group",
+  "influencer_name": "You",
+  "children": [
+    {
+      "id": "000001",
+      "influencer_name": "Your Spouse",
+      "parent_id": "000000",
+      "children": [
+        {
+          "id": "0000011",
+          "influencer_name": "Your Cousin",
+          "parent_id": "000001",
+          "date_placed": "2023-10-11T03:09:56.895409"
+        },
+        {
+          "id": "0000012",
+          "influencer_name": "Your Sister",
+          "parent_id": "000001",
+          "date_placed": "2023-10-11T03:09:56.895409"
+        }
+      ],
+      "date_placed": "2023-10-11T03:03:40.758227",
+      "friend": 2
+    },
+    {
+      "id": "000002",
+      "influencer_name": "Your Dad",
+      "parent_id": "000000",
+      "date_placed": "2023-10-11T03:05:16.154325"
+    },
+    {
+      "id": "000003",
+      "influencer_name": "Your Friend",
+      "parent_id": "000000",
+      "date_placed": "2023-10-11T03:06:36.791148"
+    },
+    {
+      "id": "000004",
+      "influencer_name": "Your Co-Worker",
+      "parent_id": "000000",
+      "children": [
+        {
+          "id": "0000041",
+          "influencer_name": "Your Boss",
+          "parent_id": "000004",
+          "date_placed": "2023-10-11T03:55:03.109333"
+        }
+      ],
+      "date_placed": "2023-10-11T03:07:57.762116",
+      "friend": 1
+    }
+  ],
+  "date_placed": "2023-10-11T03:01:52.707245",
+  "friend": 7
+}
